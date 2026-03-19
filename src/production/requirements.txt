@@ -1,0 +1,38 @@
+# THESORIA AI Master Agent - Python Dependencies
+# Production-ready avec versions fixées
+
+# Web3
+web3>=6.11.0,<7.0.0
+eth-abi>=4.2.1,<5.0.0
+eth-account>=0.10.0,<1.0.0
+eth-hash[pycryptodome]>=0.5.2,<1.0.0
+eth-typing>=3.5.0,<4.0.0
+eth-utils>=2.3.1,<3.0.0
+
+# Async & Networking
+aiohttp>=3.9.0,<4.0.0
+websockets>=12.0,<13.0
+httpx>=0.25.0,<1.0.0
+
+# Cryptography
+pycryptodome>=3.19.0,<4.0.0
+coincurve>=18.0.0,<19.0.0
+
+# Data Processing
+python-dotenv>=1.0.0,<2.0.0
+pydantic>=2.5.0,<3.0.0
+
+# Monitoring
+prometheus-client>=0.19.0,<1.0.0
+
+# Logging
+structlog>=23.2.0,<24.0.0
+colorama>=0.4.6,<1.0.0
+
+# Utils
+python-dateutil>=2.8.2,<3.0.0
+pytz>=2023.3
+
+# Optional: Machine Learning (pour future optimization)
+# numpy>=1.26.0,<2.0.0
+# scipy>=1.11.0,<2.0.0

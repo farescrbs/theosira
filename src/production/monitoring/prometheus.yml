@@ -1,0 +1,43 @@
+# Prometheus Configuration - THESORIA
+# Scrape interval optimisé pour MEV (5s)
+
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+  external_labels:
+    cluster: 'thesoria-graal'
+    environment: 'production'
+
+# Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Alert rules
+rule_files:
+  - '/etc/prometheus/alerts.yml'
+
+# Scrape configs
+scrape_configs:
+  # AI Master Agent
+  - job_name: 'ai-master-agent'
+    static_configs:
+      - targets:
+          - 'mev-agent:9000'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scrape_timeout: 4s
+  
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets:
+          - 'localhost:9090'
+  
+  # Alertmanager
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets:
+          - 'alertmanager:9093'

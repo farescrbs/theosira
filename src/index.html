@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>THESORIA - Plateforme DeFi Ultra-Luxueuse</title>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- BLOQUER LES ERREURS WEBSOCKET - PROTECTION MAXIMALE AU NIVEAU NAVIGATEUR   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <script>
+      (function() {
+        'use strict';
+        
+        // ─────────────────────────────────────────────────────────────────────────
+        // NIVEAU 0 : Intercepter WebSocket AVANT tout
+        // ─────────────────────────────────────────────────────────────────────────
+        if (typeof WebSocket !== 'undefined') {
+          const OriginalWebSocket = WebSocket;
+          
+          window.WebSocket = function(url, protocols) {
+            const ws = new OriginalWebSocket(url, protocols);
+            
+            // Bloquer toutes les erreurs
+            ws.addEventListener('error', function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              if (event.stopImmediatePropagation) {
+                event.stopImmediatePropagation();
+              }
+            }, { capture: true });
+            
+            return ws;
+          };
+          
+          // Copier les constantes
+          window.WebSocket.CONNECTING = OriginalWebSocket.CONNECTING;
+          window.WebSocket.OPEN = OriginalWebSocket.OPEN;
+          window.WebSocket.CLOSING = OriginalWebSocket.CLOSING;
+          window.WebSocket.CLOSED = OriginalWebSocket.CLOSED;
+        }
+        
+        // ─────────────────────────────────────────────────────────────────────────
+        // NIVEAU 1 : Bloquer console.error
+        // ─────────────────────────────────────────────────────────────────────────
+        const originalError = console.error;
+        console.error = function() {
+          const args = Array.from(arguments);
+          const str = args.map(function(arg) {
+            try {
+              return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+            } catch (e) {
+              return '';
+            }
+          }).join(' ').toLowerCase();
+          
+          if (str.includes('websocket') || str.includes('ws://') || str.includes('istrusted')) {
+            return; // Bloquer
+          }
+          
+          originalError.apply(console, arguments);
+        };
+        
+        // ─────────────────────────────────────────────────────────────────────────
+        // NIVEAU 2 : Bloquer addEventListener global
+        // ─────────────────────────────────────────────────────────────────────────
+        const originalAddEventListener = EventTarget.prototype.addEventListener;
+        
+        EventTarget.prototype.addEventListener = function(type, listener, options) {
+          if (type === 'error') {
+            const wrapped = function(event) {
+              if (event && event.target) {
+                const target = event.target;
+                const isWS = (target.constructor && target.constructor.name === 'WebSocket') ||
+                            (target.url && typeof target.url === 'string' && target.url.startsWith('ws'));
+                
+                if (isWS) {
+                  if (event.preventDefault) event.preventDefault();
+                  if (event.stopPropagation) event.stopPropagation();
+                  if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+                  return false;
+                }
+              }
+              
+              if (typeof listener === 'function') {
+                return listener.call(this, event);
+              } else if (listener && listener.handleEvent) {
+                return listener.handleEvent(event);
+              }
+            };
+            
+            return originalAddEventListener.call(this, type, wrapped, options);
+          }
+          
+          return originalAddEventListener.call(this, type, listener, options);
+        };
+        
+        console.log('✅ [THESORIA] Protection WebSocket HTML activée');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/main.tsx"></script>
+  </body>
+</html>

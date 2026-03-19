@@ -1,0 +1,89 @@
+# Prometheus Alert Rules - THESORIA
+# Alertes critiques pour l'Agent IA Maître
+
+groups:
+  - name: ai_master_agent
+    interval: 10s
+    rules:
+      # Agent Down
+      - alert: AgentDown
+        expr: up{job="ai-master-agent"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AI Master Agent is DOWN"
+          description: "Agent has been down for more than 1 minute"
+      
+      # Low Success Rate
+      - alert: LowSuccessRate
+        expr: master_agent_success_rate < 0.3
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low success rate (< 30%)"
+          description: "Success rate: {{ $value | humanizePercentage }}"
+      
+      # Emergency Stop
+      - alert: EmergencyStop
+        expr: master_agent_state == 5
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "EMERGENCY STOP TRIGGERED"
+          description: "Agent in emergency stop state"
+      
+      # High Decision Latency
+      - alert: HighDecisionLatency
+        expr: histogram_quantile(0.95, master_agent_decision_latency_seconds) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High decision latency (p95 > 100ms)"
+          description: "p95 latency: {{ $value }}s"
+      
+      # Consecutive Failures
+      - alert: ConsecutiveFailures
+        expr: increase(master_agent_learning_iterations[5m]) > 3
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Multiple consecutive failures"
+          description: "Learning iterations in last 5min: {{ $value }}"
+      
+      # High Profit (Success!)
+      - alert: HighProfit
+        expr: increase(master_agent_profit_cumulative_usd[1h]) > 1000
+        for: 10s
+        labels:
+          severity: info
+        annotations:
+          summary: "High profit achieved! 🚀"
+          description: "Profit last hour: ${{ $value }}"
+
+  - name: system
+    interval: 30s
+    rules:
+      # High Memory
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.9
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage (> 90%)"
+          description: "Memory usage: {{ $value | humanizePercentage }}"
+      
+      # High CPU
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage (> 80%)"
+          description: "CPU usage: {{ $value }}%"

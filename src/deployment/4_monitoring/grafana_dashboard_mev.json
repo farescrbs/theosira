@@ -1,0 +1,354 @@
+{
+  "dashboard": {
+    "title": "THESORIA MEV - Vue d'Ensemble",
+    "uid": "thesoria-mev-overview",
+    "tags": ["thesoria", "mev", "production"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "5s",
+    
+    "panels": [
+      {
+        "id": 1,
+        "title": "💰 Profit Net Cumulé (USD)",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "sum(mev_profit_total_usd) - sum(mev_gas_paid_total_usd)",
+            "legendFormat": "Profit Net",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(mev_profit_total_usd)",
+            "legendFormat": "Profit Brut",
+            "refId": "B"
+          },
+          {
+            "expr": "sum(mev_gas_paid_total_usd)",
+            "legendFormat": "Gas Payé",
+            "refId": "C"
+          }
+        ],
+        "yaxes": [
+          {"format": "currencyUSD", "label": "Profit"},
+          {"format": "short"}
+        ],
+        "lines": true,
+        "fill": 2,
+        "linewidth": 2,
+        "nullPointMode": "null as zero"
+      },
+      
+      {
+        "id": 2,
+        "title": "📊 Statistiques en Temps Réel",
+        "type": "stat",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "sum(mev_profit_total_usd) - sum(mev_gas_paid_total_usd)",
+            "legendFormat": "Profit Net Total"
+          }
+        ],
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"]
+          },
+          "orientation": "auto",
+          "textMode": "value_and_name",
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "decimals": 2,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 1000, "color": "yellow"},
+                {"value": 10000, "color": "green"}
+              ]
+            }
+          }
+        }
+      },
+      
+      {
+        "id": 3,
+        "title": "⚡ Bundles Flashbots - Taux de Succès",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "sum(rate(mev_bundles_success_total[5m])) / sum(rate(mev_bundles_sent_total[5m])) * 100",
+            "legendFormat": "Taux de Succès (%)",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "percent", "label": "Succès", "min": 0, "max": 100},
+          {"format": "short"}
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {"type": "lt", "params": [50]},
+              "operator": {"type": "and"},
+              "query": {"params": ["A", "5m", "now"]},
+              "reducer": {"type": "avg"},
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "frequency": "1m",
+          "handler": 1,
+          "name": "Taux de succès faible",
+          "noDataState": "no_data",
+          "notifications": []
+        }
+      },
+      
+      {
+        "id": 4,
+        "title": "🔋 Balance Wallet (ETH)",
+        "type": "gauge",
+        "gridPos": {"x": 12, "y": 8, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "mev_wallet_balance_eth",
+            "legendFormat": "{{chain}} - {{address}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "eth",
+            "min": 0,
+            "max": 20,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 0.5, "color": "yellow"},
+                {"value": 2, "color": "green"}
+              ]
+            }
+          }
+        },
+        "options": {
+          "showThresholdLabels": true,
+          "showThresholdMarkers": true
+        }
+      },
+      
+      {
+        "id": 5,
+        "title": "⛽ Gas Price Actuel (Gwei)",
+        "type": "stat",
+        "gridPos": {"x": 18, "y": 8, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "mev_gas_price_current_gwei",
+            "legendFormat": "{{chain}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "decimals": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 100, "color": "yellow"},
+                {"value": 200, "color": "red"}
+              ]
+            }
+          }
+        }
+      },
+      
+      {
+        "id": 6,
+        "title": "📈 Trades Exécutés (Success vs Failed)",
+        "type": "piechart",
+        "gridPos": {"x": 0, "y": 16, "w": 8, "h": 8},
+        "targets": [
+          {
+            "expr": "sum(mev_trades_executed_total{status=\"success\"})",
+            "legendFormat": "Success"
+          },
+          {
+            "expr": "sum(mev_trades_executed_total{status=\"failed\"})",
+            "legendFormat": "Failed"
+          }
+        ],
+        "options": {
+          "legend": {"displayMode": "list", "placement": "right"},
+          "pieType": "donut",
+          "displayLabels": ["percent"]
+        }
+      },
+      
+      {
+        "id": 7,
+        "title": "🛡️ Algorithme Sécurité - Approuvé vs Rejeté",
+        "type": "bargauge",
+        "gridPos": {"x": 8, "y": 16, "w": 8, "h": 8},
+        "targets": [
+          {
+            "expr": "sum(mev_security_approved_total)",
+            "legendFormat": "Approuvés"
+          },
+          {
+            "expr": "sum(mev_security_rejected_total)",
+            "legendFormat": "Rejetés"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "lcd",
+          "showUnfilled": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      
+      {
+        "id": 8,
+        "title": "⚡ Performance - Latence Scan (P95)",
+        "type": "graph",
+        "gridPos": {"x": 16, "y": 16, "w": 8, "h": 8},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(mev_scan_latency_seconds_bucket[5m]))",
+            "legendFormat": "{{chain}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "s", "label": "Latence", "decimals": 3},
+          {"format": "short"}
+        ]
+      },
+      
+      {
+        "id": 9,
+        "title": "💎 Opportunités Détectées par Chain",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 24, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "rate(mev_opportunities_detected_total[5m])",
+            "legendFormat": "{{chain}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "ops", "label": "Opportunités/sec"},
+          {"format": "short"}
+        ]
+      },
+      
+      {
+        "id": 10,
+        "title": "💰 Profit par Trade (Distribution)",
+        "type": "heatmap",
+        "gridPos": {"x": 12, "y": 24, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "rate(mev_profit_per_trade_usd_bucket[5m])",
+            "legendFormat": "{{le}}"
+          }
+        ]
+      },
+      
+      {
+        "id": 11,
+        "title": "❌ Erreurs par Type",
+        "type": "table",
+        "gridPos": {"x": 0, "y": 32, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "sum by (error_type) (mev_errors_total)",
+            "format": "table",
+            "instant": true
+          }
+        ],
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {"Time": true},
+              "indexByName": {},
+              "renameByName": {
+                "error_type": "Type d'Erreur",
+                "Value": "Total"
+              }
+            }
+          }
+        ]
+      },
+      
+      {
+        "id": 12,
+        "title": "⏱️ Uptime",
+        "type": "stat",
+        "gridPos": {"x": 12, "y": 32, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "mev_uptime_seconds"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "decimals": 0,
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 3600, "color": "yellow"},
+                {"value": 86400, "color": "green"}
+              ]
+            }
+          }
+        },
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "textMode": "value_and_name"
+        }
+      }
+    ],
+    
+    "templating": {
+      "list": [
+        {
+          "name": "chain",
+          "type": "query",
+          "query": "label_values(mev_profit_total_usd, chain)",
+          "refresh": 1,
+          "multi": true,
+          "includeAll": true
+        }
+      ]
+    },
+    
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"]
+    }
+  }
+}

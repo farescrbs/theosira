@@ -1,0 +1,57 @@
+# 🐍 THESORIA Agent MEV - Dockerfile Production
+# Optimisé pour performance maximale
+
+FROM python:3.11-slim
+
+# Metadata
+LABEL maintainer="THESORIA <contact@thesoria.io>"
+LABEL description="THESORIA MEV Agent - Production Ready"
+
+# Variables d'environnement
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Installer dépendances système
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    libssl-dev \
+    pkg-config \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Créer répertoire app
+WORKDIR /app
+
+# Copier requirements
+COPY production/requirements_production.txt .
+
+# Installer dépendances Python
+RUN pip install --upgrade pip && \
+    pip install -r requirements_production.txt
+
+# Copier le code
+COPY scripts/ ./scripts/
+COPY production/ ./production/
+COPY contracts/artifacts/ ./contracts/artifacts/
+
+# Créer répertoires
+RUN mkdir -p /app/logs /app/data
+
+# Utilisateur non-root pour sécurité
+RUN useradd -m -u 1000 thesoria && \
+    chown -R thesoria:thesoria /app
+
+USER thesoria
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "import redis; r=redis.Redis(host='${REDIS_HOST:-redis}'); r.ping()" || exit 1
+
+# Point d'entrée
+WORKDIR /app/production
+CMD ["python", "launcher_production.py", "--chains", "ethereum", "polygon", "arbitrum"]

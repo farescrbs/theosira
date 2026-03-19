@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════════
+  ERREUR WEBSOCKET - FIX IMMÉDIAT
+═══════════════════════════════════════════════════════════════
+
+❌ ERREUR : "Erreur WebSocket: { "isTrusted": true }"
+
+✅ SOLUTION (3 commandes) :
+
+1. Nettoyer cache :
+   rm -rf node_modules/.vite dist .vite
+
+2. Relancer serveur :
+   npm run dev
+
+3. Navigateur :
+   http://localhost:3000
+   Ctrl + Shift + R
+
+═══════════════════════════════════════════════════════════════
+
+⚠️  ÉTAPE 3 CRUCIALE : Hard Refresh (Ctrl + Shift + R)
+    Pas juste F5 ! Obligatoire pour vider cache navigateur !
+
+═══════════════════════════════════════════════════════════════
+
+SI ÇA NE MARCHE PAS :
+
+→ F12 → Application → Clear storage → Clear all
+→ Puis Ctrl + Shift + R à nouveau
+
+OU
+
+→ Mode incognito (Ctrl + Shift + N)
+→ http://localhost:3000
+→ Si ça marche → Vider cache navigateur normal
+
+═══════════════════════════════════════════════════════════════
+
+SCRIPTS AUTOMATIQUES :
+
+Windows : Double-cliquer clean-cache.bat
+Mac/Linux : ./clean-cache.sh
+
+═══════════════════════════════════════════════════════════════
+
+GUIDES COMPLETS :
+
+• SOLUTION_FINALE.md - Guide visuel complet
+• FIX_MAINTENANT.md - Toutes les solutions
+• START_HERE.md - Démarrage rapide
+
+═══════════════════════════════════════════════════════════════
+
+LE PROBLÈME EST LE CACHE, PAS LE CODE !
+
+Code corrigé ✅
+Cache à vider ⚠️
+
+═══════════════════════════════════════════════════════════════

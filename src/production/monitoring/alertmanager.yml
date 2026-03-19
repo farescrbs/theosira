@@ -1,0 +1,44 @@
+# Alertmanager Configuration - THESORIA
+# Routes alertes vers Discord/Telegram
+
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 12h
+  receiver: 'discord-webhook'
+  routes:
+    # Alertes critiques -> Discord + Telegram
+    - match:
+        severity: critical
+      receiver: 'discord-webhook'
+      continue: true
+    
+    # Succès (high profit) -> Discord
+    - match:
+        severity: info
+      receiver: 'discord-webhook'
+
+receivers:
+  # Discord Webhook
+  - name: 'discord-webhook'
+    webhook_configs:
+      - url: '${DISCORD_WEBHOOK_URL}'
+        send_resolved: true
+  
+  # Peut ajouter Telegram, Slack, etc.
+  # - name: 'telegram'
+  #   telegram_configs:
+  #     - bot_token: '${TELEGRAM_BOT_TOKEN}'
+  #       chat_id: ${TELEGRAM_CHAT_ID}
+  #       parse_mode: 'HTML'
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'cluster', 'service']

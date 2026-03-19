@@ -1,0 +1,397 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║         📋 COMMANDES EXACTES À COPIER-COLLER 📋                     ║
+║                                                                      ║
+║  Suivez ces commandes dans l'ordre pour déployer THESORIA          ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════
+  🖥️ WINDOWS
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 1 : SCRIPT AUTOMATIQUE (Recommandé)                         │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Double-cliquez sur ce fichier :
+
+   DEPLOIEMENT_IMMEDIAT.bat
+
+   ✅ C'est tout ! Le script fait le reste.
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 2 : LIGNE DE COMMANDE                                       │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Ouvrir CMD ou PowerShell dans ce dossier
+
+2. Copier-coller ces commandes UNE PAR UNE :
+
+   npm run build
+
+   npm run preview
+
+   npm install -g vercel
+
+   vercel login
+
+   vercel --prod
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 3 : TOUT EN UNE LIGNE                                       │
+└──────────────────────────────────────────────────────────────────────┘
+
+   npm run build && vercel --prod
+
+
+═══════════════════════════════════════════════════════════════════════
+  🐧 LINUX / MAC
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 1 : SCRIPT AUTOMATIQUE (Recommandé)                         │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Terminal dans ce dossier
+
+2. Copier-coller ces commandes :
+
+   chmod +x DEPLOIEMENT_IMMEDIAT.sh
+
+   ./DEPLOIEMENT_IMMEDIAT.sh
+
+   ✅ C'est tout !
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 2 : COMMANDES MANUELLES                                     │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Copier-coller UNE PAR UNE :
+
+   npm run build
+
+   npm run preview
+
+   sudo npm install -g vercel
+
+   vercel login
+
+   vercel --prod
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ MÉTHODE 3 : TOUT EN UNE LIGNE                                       │
+└──────────────────────────────────────────────────────────────────────┘
+
+   npm run build && vercel --prod
+
+
+═══════════════════════════════════════════════════════════════════════
+  🔧 COMMANDES DE DÉPANNAGE
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Nettoyer et Réinstaller                                             │
+└──────────────────────────────────────────────────────────────────────┘
+
+Windows :
+─────────
+rmdir /s /q node_modules
+del package-lock.json
+npm install
+npm run build
+
+
+Linux/Mac :
+───────────
+rm -rf node_modules package-lock.json
+npm install
+npm run build
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Augmenter la Mémoire (Si "Out of Memory")                           │
+└──────────────────────────────────────────────────────────────────────┘
+
+Windows :
+─────────
+set NODE_OPTIONS=--max-old-space-size=4096
+npm run build
+
+
+Linux/Mac :
+───────────
+NODE_OPTIONS=--max-old-space-size=4096 npm run build
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Vérifier les Versions                                               │
+└──────────────────────────────────────────────────────────────────────┘
+
+node --version
+
+npm --version
+
+vercel --version
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Nettoyer le Cache Vite                                              │
+└──────────────────────────────────────────────────────────────────────┘
+
+Windows :
+─────────
+rmdir /s /q node_modules\.vite
+rmdir /s /q dist
+
+
+Linux/Mac :
+───────────
+rm -rf node_modules/.vite dist
+
+
+═══════════════════════════════════════════════════════════════════════
+  📦 DÉPLOIEMENT DU SMART CONTRACT FLASHBOT
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 1 : Aller dans le dossier contracts                           │
+└──────────────────────────────────────────────────────────────────────┘
+
+cd contracts
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 2 : Installer les dépendances                                 │
+└──────────────────────────────────────────────────────────────────────┘
+
+npm install --legacy-peer-deps
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 3 : Configurer la clé privée                                  │
+└──────────────────────────────────────────────────────────────────────┘
+
+Créer un fichier .env dans contracts/ :
+
+echo PRIVATE_KEY=VOTRE_CLE_PRIVEE_ICI > .env
+
+⚠️ REMPLACER "VOTRE_CLE_PRIVEE_ICI" par votre vraie clé !
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 4 : Déployer sur Polygon                                      │
+└──────────────────────────────────────────────────────────────────────┘
+
+npm run deploy:polygon
+
+OU
+
+npx hardhat run scripts/deploy-flashbot.js --network polygon
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 5 : Copier l'adresse du contrat                               │
+└──────────────────────────────────────────────────────────────────────┘
+
+Vous verrez dans le terminal :
+
+   ✅ FlashBot deployed to: 0xABC123...
+
+Copier cette adresse !
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 6 : Mettre à jour deployment.json                             │
+└──────────────────────────────────────────────────────────────────────┘
+
+Retour au dossier racine :
+
+cd ..
+
+
+Éditer public/contracts/deployment.json :
+
+{
+  "networks": {
+    "polygon": {
+      "FlashBot": "0xABC123...",  ← Coller l'adresse ici
+      "deployedAt": "2024-12-27T..."
+    }
+  }
+}
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 7 : Rebuild et Redéployer                                     │
+└──────────────────────────────────────────────────────────────────────┘
+
+npm run build
+
+vercel --prod
+
+
+═══════════════════════════════════════════════════════════════════════
+  🌐 DÉPLOIEMENT VIA GITHUB (Alternatif)
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 1 : Initialiser Git                                           │
+└──────────────────────────────────────────────────────────────────────┘
+
+git init
+
+git add .
+
+git commit -m "🚀 THESORIA Production Ready"
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 2 : Créer un repo sur GitHub                                  │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Aller sur : https://github.com/new
+
+2. Nom : thesoria-web3-platform
+
+3. Cliquer "Create repository"
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 3 : Lier et Push                                              │
+└──────────────────────────────────────────────────────────────────────┘
+
+git remote add origin https://github.com/VOTRE_USERNAME/thesoria-web3-platform.git
+
+git branch -M main
+
+git push -u origin main
+
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Étape 4 : Connecter Vercel                                          │
+└──────────────────────────────────────────────────────────────────────┘
+
+1. Aller sur : https://vercel.com
+
+2. Cliquer "New Project"
+
+3. Importer votre repo GitHub
+
+4. Cliquer "Deploy"
+
+✅ Vercel détecte Vite automatiquement !
+
+
+═══════════════════════════════════════════════════════════════════════
+  🔐 VARIABLES D'ENVIRONNEMENT VERCEL
+═══════════════════════════════════════════════════════════════════════
+
+Dans Vercel Dashboard → Settings → Environment Variables :
+
+Ajouter ces variables :
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Nom                          │ Valeur                                │
+├──────────────────────────────┼───────────────────────────────────────┤
+│ VITE_APP_NAME                │ THESORIA                              │
+│ VITE_APP_VERSION             │ 3.0.0                                 │
+│ VITE_ALCHEMY_API_KEY         │ XUbdW3HgRyDHALSbpyjPr                │
+│ VITE_ETHERSCAN_API_KEY       │ F9F4JPNB5UC6E5M79IY6DIBP58J4I7BRQ3   │
+└──────────────────────────────┴───────────────────────────────────────┘
+
+⚠️  NE JAMAIS METTRE :
+   - PRIVATE_KEY (garder côté serveur uniquement)
+   - Seed phrases
+   - Mots de passe
+
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ VÉRIFICATION RAPIDE
+═══════════════════════════════════════════════════════════════════════
+
+Après le déploiement, vérifier :
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Test                              │ Commande                         │
+├───────────────────────────────────┼──────────────────────────────────┤
+│ Site accessible                   │ Ouvrir l'URL fournie             │
+│ HTTPS actif                       │ Vérifier le cadenas 🔒           │
+│ Console propre                    │ F12 → Console (0 erreurs)        │
+│ MetaMask connexion                │ Cliquer "Connect Wallet"         │
+│ Performance                       │ F12 → Lighthouse                 │
+└───────────────────────────────────┴──────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════
+  🎯 WORKFLOW COMPLET - TOUT COPIER-COLLER
+═══════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ 🚀 BUILD + DÉPLOIEMENT COMPLET                                      │
+└──────────────────────────────────────────────────────────────────────┘
+
+# 1. Build du frontend
+npm run build
+
+# 2. Installer Vercel CLI
+npm install -g vercel
+
+# 3. Connexion
+vercel login
+
+# 4. Déploiement
+vercel --prod
+
+# 5. Aller dans contracts
+cd contracts
+
+# 6. Installer dépendances
+npm install --legacy-peer-deps
+
+# 7. Créer .env avec votre clé privée
+echo PRIVATE_KEY=VOTRE_CLE_ICI > .env
+
+# 8. Déployer le smart contract
+npm run deploy:polygon
+
+# 9. Copier l'adresse affichée
+
+# 10. Retour racine
+cd ..
+
+# 11. Éditer public/contracts/deployment.json
+# (Coller l'adresse du contrat)
+
+# 12. Rebuild
+npm run build
+
+# 13. Redéployer
+vercel --prod
+
+# ✅ TERMINÉ !
+
+
+═══════════════════════════════════════════════════════════════════════
+  📞 AIDE SUPPLÉMENTAIRE
+═══════════════════════════════════════════════════════════════════════
+
+Consulter ces fichiers :
+
+   📄 GUIDE_BUILD_DEPLOIEMENT.md         ← Guide détaillé
+   📄 VERIFICATION_POST_DEPLOIEMENT.md   ← Checklist complète
+   📄 🚀_LANCER_BUILD.txt                ← Explications
+   📄 🎯_ACTIONS_IMMEDIATES.txt          ← Vue d'ensemble
+
+
+═══════════════════════════════════════════════════════════════════════
+
+🎉 Vous avez toutes les commandes !
+Copiez-collez et lancez ! 🚀
+
+Bon déploiement ! 💎

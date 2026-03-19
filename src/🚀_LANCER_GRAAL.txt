@@ -1,0 +1,251 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║              🚀 LANCER LE DASHBOARD GRAAL 🚀                        ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════
+  ⚡ COMMANDES RAPIDES
+═══════════════════════════════════════════════════════════════════════
+
+TEST EN LOCAL :
+───────────────
+   npm run dev
+
+   Puis ouvrir : http://localhost:5173
+
+
+BUILD PRODUCTION :
+──────────────────
+   npm run build
+
+
+DÉPLOYER SUR VERCEL :
+─────────────────────
+   vercel --prod
+
+
+═══════════════════════════════════════════════════════════════════════
+  📝 ACTIVATION DU DASHBOARD
+═══════════════════════════════════════════════════════════════════════
+
+Méthode 1 - Page Dédiée (Recommandé) :
+───────────────────────────────────────
+
+1. Ouvrir App.tsx
+
+2. Remplacer le contenu par :
+
+   import GraalDemo from './GraalDemo';
+   
+   export default function App() {
+     return <GraalDemo />;
+   }
+
+3. Sauvegarder
+
+4. Lancer : npm run dev
+
+
+Méthode 2 - Intégration THESORIA :
+──────────────────────────────────
+
+1. Dans App.tsx, ajouter l'import :
+
+   import { GraalDashboard } from './components/graal/GraalDashboard';
+
+2. Ajouter dans la navigation :
+
+   <button onClick={() => setView('graal')}>AI Engine</button>
+
+3. Ajouter dans le contenu :
+
+   {view === 'graal' && <GraalDashboard />}
+
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ FICHIERS CRÉÉS
+═══════════════════════════════════════════════════════════════════════
+
+Composants :
+────────────
+   ✅ /components/graal/MasterAgentThinking.tsx
+   ✅ /components/graal/QuantumVaultStatus.tsx
+   ✅ /components/graal/RealTimeScanner.tsx
+   ✅ /components/graal/ProfitTracker.tsx
+   ✅ /components/graal/ExecutionLog.tsx
+   ✅ /components/graal/AIStatsPanel.tsx
+   ✅ /components/graal/EmergencyControls.tsx
+   ✅ /components/graal/GraalDashboard.tsx
+
+Utilitaires :
+─────────────
+   ✅ /components/graal/MockWebSocket.ts
+   ✅ /components/graal/types.ts
+
+Page de démo :
+──────────────
+   ✅ /GraalDemo.tsx
+
+Styles :
+────────
+   ✅ /styles/globals.css (scrollbar + animations)
+
+Documentation :
+───────────────
+   ✅ /GRAAL_DASHBOARD_README.md
+   ✅ /✅_GRAAL_DASHBOARD_PRET.md
+   ✅ /🚀_LANCER_GRAAL.txt (ce fichier)
+
+
+═══════════════════════════════════════════════════════════════════════
+  🎨 CE QUI VA S'AFFICHER
+═══════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  🌟 GRAAL AI SYSTEM                                                │
+│     Autonomous MEV & Flash Loan Engine                             │
+│                                                                     │
+│  ┌─────────────────────────────────┐  ┌──────────────────────────┐ │
+│  │                                 │  │                          │ │
+│  │  🧠 Master Agent Intelligence   │  │  🔐 Quantum Vault        │ │
+│  │                                 │  │     Balance: 12.45 ETH   │ │
+│  │  "Scanning Curve pools..."      │  │     Status: Unlocked     │ │
+│  │                                 │  │                          │ │
+│  │  Consciousness: 92%             │  └──────────────────────────┘ │
+│  │  Autonomous: 87%                │                                │
+│  │                                 │  ┌──────────────────────────┐ │
+│  └─────────────────────────────────┘  │  📈 Profit Tracker       │ │
+│                                        │     Total: 3.42 ETH      │ │
+│  ┌─────────────────────────────────┐  │     Win Rate: 85%        │ │
+│  │  📡 Real-Time MEV Scanner       │  └──────────────────────────┘ │
+│  │                                 │                                │
+│  │  • Uniswap V3 | ETH             │  ┌──────────────────────────┐ │
+│  │    +0.45 ETH | 98.2% conf.      │  │  📊 AI Stats Panel       │ │
+│  │                                 │  │     Trades: 42           │ │
+│  │  • Curve | BASE                 │  │     Uptime: 02:15:30     │ │
+│  │    +0.32 ETH | 95.1% conf.      │  └──────────────────────────┘ │
+│  │                                 │                                │
+│  └─────────────────────────────────┘  ┌──────────────────────────┐ │
+│                                        │  🚨 Emergency Controls   │ │
+│  ┌─────────────────────────────────┐  │     [Pause Trading]      │ │
+│  │  📜 Execution Log               │  │     [Emergency Withdraw] │ │
+│  │                                 │  │     [Restart System]     │ │
+│  │  ✅ Flash Loan executed         │  └──────────────────────────┘ │
+│  │     +0.40 ETH on Uniswap V3     │                                │
+│  │     TX: 0x1a2b...c3d4           │                                │
+│  │                                 │                                │
+│  │  ❌ Execution failed            │                                │
+│  │     Gas spike detected          │                                │
+│  │                                 │                                │
+│  └─────────────────────────────────┘                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════
+  ⚡ FONCTIONNALITÉS ACTIVES
+═══════════════════════════════════════════════════════════════════════
+
+✅ Nouvelles opportunités toutes les 2-5 secondes
+✅ Pensées de l'IA qui défilent (typing effect)
+✅ Exécutions simulées avec 85% de succès
+✅ Graphique de profit temps réel
+✅ Logs d'événements complets
+✅ Boutons de contrôle fonctionnels
+✅ Lock/Unlock du vault
+✅ Stats qui se mettent à jour
+✅ Animations de particules
+✅ Effets de glow sur les éléments
+✅ Scrollbar personnalisée dorée
+
+
+═══════════════════════════════════════════════════════════════════════
+  📱 RESPONSIVE
+═══════════════════════════════════════════════════════════════════════
+
+Desktop  : 3 colonnes (scanner + log | vault + stats + controls)
+Tablet   : 2 colonnes
+Mobile   : 1 colonne (stack vertical)
+
+
+═══════════════════════════════════════════════════════════════════════
+  🔧 PERSONNALISATION RAPIDE
+═══════════════════════════════════════════════════════════════════════
+
+Changer les pensées de l'IA :
+──────────────────────────────
+   Fichier : /components/graal/MockWebSocket.ts
+   Ligne   : 17-28 (private thoughts)
+
+
+Changer les protocoles :
+────────────────────────
+   Fichier : /components/graal/MockWebSocket.ts
+   Ligne   : 11 (private protocols)
+
+
+Changer les chaînes :
+─────────────────────
+   Fichier : /components/graal/MockWebSocket.ts
+   Ligne   : 12 (private chains)
+
+
+═══════════════════════════════════════════════════════════════════════
+  ⚠️ IMPORTANT
+═══════════════════════════════════════════════════════════════════════
+
+Ce dashboard est une SIMULATION :
+
+   ✅ Interface ultra-premium fonctionnelle
+   ✅ Données simulées réalistes
+   ✅ Parfait pour démo/présentation
+   
+   ❌ Pas de vraies connexions blockchain
+   ❌ Pas de vrais Flash Loans
+   ❌ Pas de backend Rust (à développer séparément)
+
+
+═══════════════════════════════════════════════════════════════════════
+  📚 DOCUMENTATION COMPLÈTE
+═══════════════════════════════════════════════════════════════════════
+
+Consultez :
+───────────
+   📄 GRAAL_DASHBOARD_README.md      (Guide complet)
+   📄 ✅_GRAAL_DASHBOARD_PRET.md     (Récapitulatif)
+
+
+═══════════════════════════════════════════════════════════════════════
+  🚀 LANCEZ MAINTENANT !
+═══════════════════════════════════════════════════════════════════════
+
+Commande :
+──────────
+   npm run dev
+
+
+Puis ouvrez :
+─────────────
+   http://localhost:5173
+
+
+Résultat attendu :
+──────────────────
+   ✅ Dashboard s'affiche
+   ✅ Opportunités apparaissent
+   ✅ IA pense en temps réel
+   ✅ Graphiques animés
+   ✅ Logs s'enregistrent
+   ✅ Tout fonctionne !
+
+
+═══════════════════════════════════════════════════════════════════════
+
+🎉 VOTRE DASHBOARD GRAAL EST PRÊT ! 🎉
+
+Lancez-le maintenant : npm run dev
+
+═══════════════════════════════════════════════════════════════════════

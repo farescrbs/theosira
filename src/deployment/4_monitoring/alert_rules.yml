@@ -1,0 +1,200 @@
+# 🚨 THESORIA - Règles d'Alerte Prometheus
+# Alertes critiques pour le monitoring MEV
+
+groups:
+  # ============================================
+  # ALERTES CRITIQUES (P0)
+  # ============================================
+  - name: critical_alerts
+    interval: 30s
+    rules:
+      
+      # Balance wallet dangereusement basse
+      - alert: WalletBalanceCritical
+        expr: mev_wallet_balance_eth < 0.1
+        for: 1m
+        labels:
+          severity: critical
+          category: security
+        annotations:
+          summary: "⚠️ CRITIQUE: Balance wallet trop basse!"
+          description: "Balance: {{ $value }} ETH (seuil: 0.1 ETH). Rechargez immédiatement!"
+      
+      # Agent arrêté
+      - alert: AgentDown
+        expr: up{job="mev_agent"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          category: system
+        annotations:
+          summary: "🛑 CRITIQUE: Agent MEV hors ligne!"
+          description: "L'agent MEV ne répond plus depuis 1 minute."
+      
+      # Taux d'erreur très élevé
+      - alert: HighErrorRate
+        expr: rate(mev_errors_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: critical
+          category: errors
+        annotations:
+          summary: "🔥 CRITIQUE: Taux d'erreur élevé!"
+          description: "Plus de 10 erreurs/min détectées. Vérifier les logs!"
+      
+      # Perte nette (profit négatif)
+      - alert: NegativeProfit
+        expr: mev_profit_net_current < -1000
+        for: 5m
+        labels:
+          severity: critical
+          category: trading
+        annotations:
+          summary: "💸 CRITIQUE: Perte nette détectée!"
+          description: "Perte actuelle: ${{ $value }}. Circuit breaker recommandé!"
+  
+  # ============================================
+  # ALERTES IMPORTANTES (P1)
+  # ============================================
+  - name: important_alerts
+    interval: 1m
+    rules:
+      
+      # Balance en baisse
+      - alert: WalletBalanceLow
+        expr: mev_wallet_balance_eth < 0.5
+        for: 5m
+        labels:
+          severity: warning
+          category: security
+        annotations:
+          summary: "⚠️ Balance wallet basse"
+          description: "Balance: {{ $value }} ETH. Envisager de recharger."
+      
+      # Taux de succès bundle faible
+      - alert: LowBundleSuccessRate
+        expr: mev_bundle_success_rate < 50
+        for: 10m
+        labels:
+          severity: warning
+          category: trading
+        annotations:
+          summary: "📉 Taux de succès bundle faible"
+          description: "Taux actuel: {{ $value }}%. Normal > 70%."
+      
+      # Gas price très élevé
+      - alert: HighGasPrice
+        expr: mev_gas_price_current_gwei > 200
+        for: 3m
+        labels:
+          severity: warning
+          category: performance
+        annotations:
+          summary: "⛽ Gas price élevé"
+          description: "Gas actuel: {{ $value }} Gwei. Trades moins rentables."
+      
+      # Latence RPC élevée
+      - alert: HighRPCLatency
+        expr: histogram_quantile(0.95, rate(mev_rpc_latency_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          category: performance
+        annotations:
+          summary: "🐌 Latence RPC élevée"
+          description: "P95 latency: {{ $value }}s. Recommandé < 0.1s."
+      
+      # Connexion RPC perdue
+      - alert: RPCConnectionLost
+        expr: rate(mev_rpc_connection_lost_total[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+          category: connectivity
+        annotations:
+          summary: "📡 Connexion RPC perdue"
+          description: "Chain: {{ $labels.chain }}, RPC: {{ $labels.rpc_name }}"
+  
+  # ============================================
+  # ALERTES INFORMATIVES (P2)
+  # ============================================
+  - name: info_alerts
+    interval: 5m
+    rules:
+      
+      # Profit élevé (bonne nouvelle!)
+      - alert: HighProfitDetected
+        expr: mev_profit_per_trade_usd > 1000
+        for: 0s
+        labels:
+          severity: info
+          category: trading
+        annotations:
+          summary: "💰 Profit élevé détecté!"
+          description: "Trade avec profit de ${{ $value }}. Excellent!"
+      
+      # Taux de rejet sécurité élevé
+      - alert: HighSecurityRejectionRate
+        expr: |
+          rate(mev_security_rejected_total[10m]) 
+          / 
+          rate(mev_security_evaluated_total[10m]) 
+          > 0.8
+        for: 10m
+        labels:
+          severity: info
+          category: security
+        annotations:
+          summary: "🛡️ Taux de rejet élevé"
+          description: "{{ $value | humanizePercentage }} des trades rejetés. Vérifier paramètres."
+      
+      # Opportunités détectées en hausse
+      - alert: OpportunitiesSurge
+        expr: rate(mev_opportunities_detected_total[5m]) > 2
+        for: 5m
+        labels:
+          severity: info
+          category: trading
+        annotations:
+          summary: "📈 Hausse des opportunités"
+          description: "{{ $value }} opportunités/sec détectées."
+  
+  # ============================================
+  # ALERTES SYSTÈME
+  # ============================================
+  - name: system_alerts
+    interval: 1m
+    rules:
+      
+      # Uptime milestone
+      - alert: UptimeMilestone24h
+        expr: mev_uptime_seconds > 86400
+        for: 1m
+        labels:
+          severity: info
+          category: system
+        annotations:
+          summary: "🎉 24h d'uptime!"
+          description: "L'agent tourne depuis {{ $value | humanizeDuration }}."
+      
+      # Redis down
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          category: system
+        annotations:
+          summary: "⚠️ Redis hors ligne"
+          description: "Le cache Redis ne répond plus."
+      
+      # Erigon node down
+      - alert: ErigonDown
+        expr: up{job="erigon"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          category: system
+        annotations:
+          summary: "🛑 Node Erigon hors ligne!"
+          description: "Le node Ethereum ne répond plus."

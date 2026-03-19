@@ -1,0 +1,88 @@
+# 📊 THESORIA - Configuration Prometheus
+# Scrape toutes les métriques de l'agent MEV
+
+global:
+  scrape_interval: 5s           # Scrape toutes les 5 secondes
+  evaluation_interval: 10s      # Évaluer les règles toutes les 10 secondes
+  external_labels:
+    cluster: 'thesoria-production'
+    environment: 'mainnet'
+
+# Alertmanager configuration (optionnel)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - 'alertmanager:9093'
+
+# Règles d'alerte
+rule_files:
+  - 'alert_rules.yml'
+
+# Scrape configurations
+scrape_configs:
+  # ============================================
+  # 1. AGENT MEV PRINCIPAL
+  # ============================================
+  - job_name: 'mev_agent'
+    static_configs:
+      - targets: ['agent-mev:8000']
+        labels:
+          service: 'mev-agent'
+          chain: 'multi'
+    
+    # Timeout plus long pour attendre les métriques
+    scrape_timeout: 4s
+    
+    # Métriques custom
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'mev_.*'
+        action: keep
+
+  # ============================================
+  # 2. NODE ETHEREUM (Erigon)
+  # ============================================
+  - job_name: 'erigon'
+    static_configs:
+      - targets: ['erigon:9090']
+        labels:
+          service: 'erigon-node'
+          chain: 'ethereum'
+    
+    scrape_interval: 10s
+
+  # ============================================
+  # 3. REDIS CACHE
+  # ============================================
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:9121']  # Redis exporter
+        labels:
+          service: 'redis-cache'
+
+  # ============================================
+  # 4. PROMETHEUS SELF-MONITORING
+  # ============================================
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+
+  # ============================================
+  # 5. NODE EXPORTER (System metrics)
+  # ============================================
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          service: 'system'
+
+# Storage configuration
+storage:
+  tsdb:
+    path: /prometheus
+    retention:
+      time: 30d       # Garder 30 jours de données
+      size: 50GB      # Max 50GB

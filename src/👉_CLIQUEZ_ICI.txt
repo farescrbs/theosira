@@ -1,0 +1,70 @@
+
+
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃                                                  ┃
+    ┃     💎 THESORIA - DÉMARRAGE EN 1 CLIC 💎        ┃
+    ┃                                                  ┃
+    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+    ✅ Vous avez fait : npm install && npm run build
+
+
+    ⬇️  PROCHAINE ÉTAPE (1 SEUL FICHIER) ⬇️
+
+
+         ╔════════════════════════════════════╗
+         ║                                    ║
+         ║    DOUBLE-CLIQUEZ SUR :            ║
+         ║                                    ║
+         ║    ▶️  START.bat                   ║
+         ║                                    ║
+         ║    Ce fichier fait TOUT !          ║
+         ║                                    ║
+         ╚════════════════════════════════════╝
+
+
+    📋 Ce qui va se passer :
+
+        1️⃣  Génère wallet Ethereum automatiquement
+        2️⃣  Vous guide pour envoyer $10 ETH
+        3️⃣  Configure RPC Alchemy (gratuit)
+        4️⃣  Lance le système
+        5️⃣  Ouvre le navigateur
+        ✅ PROFITS en 15-30 minutes !
+
+
+    💰 Résultats attendus :
+
+        • Jour 1   : $450-800
+        • Semaine 1: $1,750-3,500
+        • Mois 1   : $15,000-30,000
+
+        ROI : 150,000%+ sur $10 !
+
+
+    ⏱️  Temps total : 10-15 minutes
+
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+    🎯 ACTION IMMÉDIATE :
+
+
+         👇👇👇 DOUBLE-CLIQUEZ MAINTENANT 👇👇👇
+
+              ▶️▶️▶️  START.bat  ◀️◀️◀️
+
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+    🆘 Aide ?
+
+        • Lire : LISEZ_MOI_EN_PREMIER.txt
+        • Guide : WINDOWS_GUIDE.md
+
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

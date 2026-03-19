@@ -1,0 +1,9 @@
+{
+  "contractAddress": "REMPLACER_PAR_ADRESSE_DEPLOYEE",
+  "network": "polygon",
+  "chainId": 137,
+  "deployedAt": "2025-12-27T00:00:00.000Z",
+  "deployer": "VOTRE_ADRESSE_WALLET",
+  "blockNumber": 0,
+  "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}

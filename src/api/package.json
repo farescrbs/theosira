@@ -1,0 +1,26 @@
+{
+  "name": "@thesoria/api",
+  "version": "1.0.0",
+  "description": "API Production pour THESORIA - Plateforme Blockchain Ultra-Luxueuse",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "tsc --noEmit",
+    "deploy": "vercel --prod",
+    "deploy:staging": "vercel",
+    "lint": "eslint . --ext .ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@vercel/node": "^3.0.0",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/node-fetch": "^2.6.9",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

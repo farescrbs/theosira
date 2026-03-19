@@ -1,0 +1,144 @@
+# THESORIA - Stack Production Complète
+# Services: AI Master Agent + Prometheus + Grafana + Alertmanager
+
+version: '3.8'
+
+services:
+  # ============================================
+  # AI MASTER AGENT (GRAAL)
+  # ============================================
+  mev-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thesoria-master-agent
+    restart: always
+    environment:
+      # Blockchain
+      - GETH_IPC_PATH=${GETH_IPC_PATH}
+      - ETH_WS_URL=${ETH_WS_URL}
+      - ETH_HTTP_URL=${ETH_HTTP_URL}
+      
+      # Account & Security
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - FLASHBOTS_RELAY=${FLASHBOTS_RELAY:-https://relay.flashbots.net}
+      
+      # Contract
+      - FLASHBOT_CONTRACT_ADDRESS=${FLASHBOT_CONTRACT_ADDRESS}
+      
+      # Config
+      - CHAIN=${CHAIN:-ethereum}
+      - MODE=${MODE:-production}
+      - INITIAL_GAS_PERCENTILE=${INITIAL_GAS_PERCENTILE:-75}
+      - INITIAL_PROFIT_THRESHOLD=${INITIAL_PROFIT_THRESHOLD:-100}
+      - MAX_CONSECUTIVE_FAILURES=${MAX_CONSECUTIVE_FAILURES:-5}
+      
+      # Alerting
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      
+      # Prometheus
+      - PROMETHEUS_PORT=9000
+    
+    volumes:
+      # IPC socket (si node local)
+      - ${GETH_IPC_PATH:-/dev/null}:${GETH_IPC_PATH:-/dev/null}
+      
+      # Logs persistants
+      - ./logs:/app/logs
+      
+      # Data persistante
+      - ./data:/app/data
+    
+    ports:
+      - "9000:9000"  # Prometheus metrics
+    
+    networks:
+      - thesoria-net
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:9000/metrics')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  
+  # ============================================
+  # PROMETHEUS (Monitoring)
+  # ============================================
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: thesoria-prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - thesoria-net
+    depends_on:
+      - mev-agent
+  
+  # ============================================
+  # GRAFANA (Dashboards)
+  # ============================================
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: thesoria-grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-thesoria2024}
+      - GF_INSTALL_PLUGINS=
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+    volumes:
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - thesoria-net
+    depends_on:
+      - prometheus
+  
+  # ============================================
+  # ALERTMANAGER (Alertes)
+  # ============================================
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: thesoria-alertmanager
+    restart: always
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager-data:/alertmanager
+    ports:
+      - "9093:9093"
+    networks:
+      - thesoria-net
+
+networks:
+  thesoria-net:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:
+  alertmanager-data:
