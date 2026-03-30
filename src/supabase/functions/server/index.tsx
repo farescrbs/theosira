@@ -17,15 +17,18 @@ app.use('*', logger(console.log));
 
 // Enable CORS for all routes and methods
 app.use(
-  "/*",
+  "*",
   cors({
     origin: "*",
-    allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "x-client-info", "apikey"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
   }),
 );
+
+// Explicitly handle OPTIONS for all routes
+app.options("*", (c) => c.text("", 204));
 
 // Health check endpoint
 app.get("/make-server-cc38a303/health", (c) => {

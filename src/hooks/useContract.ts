@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { ethers } from "npm:ethers@6.13.0";
+import { ethers } from "ethers";
 import { useWeb3 } from "../contexts/Web3Context";
 
 /**

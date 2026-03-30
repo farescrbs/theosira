@@ -64,8 +64,12 @@ export default function TransactionHistory({ web3, fmtAddr, GCard, STitle }: Tra
         const uniqueTxs = Array.from(new Map(formattedTxs.map((item: any) => [item.hash, item])).values());
         setHistoricalTransfers(uniqueTxs as any[]);
       }
-    } catch (err) {
-      console.error("Erreur chargement historique:", err);
+    } catch (err: any) {
+      if (err.message && err.message.includes("Failed to fetch")) {
+        console.warn("Historique: Impossible de joindre le serveur");
+      } else {
+        console.warn("Erreur chargement historique:", err);
+      }
     } finally {
       setIsLoadingHistory(false);
     }

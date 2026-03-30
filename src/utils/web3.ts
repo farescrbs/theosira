@@ -1,4 +1,4 @@
-import { ethers } from "npm:ethers@6.13.0";
+import { ethers } from "ethers";
 
 // Network configurations
 export const NETWORKS = {

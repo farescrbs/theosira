@@ -16,6 +16,7 @@ import StudioPage from "./pages/StudioPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import WalletConnectPage from "./pages/WalletConnectPage";
+import VideoPage from "./pages/VideoPage";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       { path: "lottery", Component: LotteryPage },
       { path: "studio", Component: StudioPage },
       { path: "profile", Component: ProfilePage },
+      { path: "video", Component: VideoPage },
       { path: "god-mode", Component: GodModePage },
       { path: "*", Component: NotFoundPage },
     ],
