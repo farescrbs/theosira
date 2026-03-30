@@ -174,8 +174,10 @@ describe('blockAllWebSocketErrors', () => {
 
     it('prevents default on WebSocket unhandled rejection', () => {
       blockAllWebSocketErrors();
+      const promise = Promise.reject('WebSocket failed');
+      promise.catch(() => {}); // prevent "unhandled rejection" noise in the test runner
       const event = new PromiseRejectionEvent('unhandledrejection', {
-        promise: Promise.reject('WebSocket failed'),
+        promise,
         reason: 'WebSocket connection refused',
         cancelable: true,
         bubbles: true,
@@ -187,8 +189,10 @@ describe('blockAllWebSocketErrors', () => {
 
     it('does not prevent default for non-WebSocket unhandled rejection', () => {
       blockAllWebSocketErrors();
+      const promise = Promise.reject('DB query failed');
+      promise.catch(() => {}); // prevent "unhandled rejection" noise in the test runner
       const event = new PromiseRejectionEvent('unhandledrejection', {
-        promise: Promise.reject('DB query failed'),
+        promise,
         reason: 'Database connection error',
         cancelable: true,
         bubbles: true,
