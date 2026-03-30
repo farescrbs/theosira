@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router";
 import {
   Menu, X, ChevronDown, Globe, Zap,
   TrendingUp, Layers, Brain, ShoppingBag,
-  Wallet, Shield, ChevronRight, Building, Crown, Code2, Video
+  Wallet, Shield, ChevronRight, Building, Crown, Code2, Video, Sparkles
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Web3ConnectionButton from "./Web3ConnectionButton";
@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { label: "MEV GOD",   to: "/mev",      icon: Zap,        special: true,  sub: "Flash · Arbitrage · Bot" },
   { label: "IA MAÎTRE", to: "/ai",       icon: Brain,      special: true,  sub: "Neural · Prediction · DAO" },
   { label: "VIDÉO",     to: "/video",    icon: Video,      special: true,  sub: "Tutoriels · Démos · Témoignages" },
+  { label: "SUPREME AI",to: "/supreme",  icon: Sparkles,   special: true,  sub: "Flash Loan · IA Autonome · Profit" },
   { label: "SERVICES",  to: "/services", icon: Globe,      special: false, sub: "Domain · Card · Bridge" },
 ];
 
