@@ -43,7 +43,6 @@
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
     "ethers": "*",
-    "fs": "*",
     "hono": "*",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.487.0",
