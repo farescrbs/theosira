@@ -5,6 +5,17 @@
   import path from 'path';
 
   export default defineConfig({
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['./src/tests/setup.ts'],
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html'],
+        include: ['src/utils/**', 'src/hooks/**', 'src/contexts/**', 'src/services/**'],
+        exclude: ['src/tests/**', 'node_modules/**'],
+      },
+    },
     plugins: [react(), tailwindcss()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
