@@ -17,11 +17,16 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import WalletConnectPage from "./pages/WalletConnectPage";
 import VideoPage from "./pages/VideoPage";
+import SupremePage from "./pages/SupremePage";
 
 export const router = createBrowserRouter([
   {
     path: "/connect",
     Component: WalletConnectPage,
+  },
+  {
+    path: "/supreme",
+    Component: SupremePage,
   },
   {
     path: "/",
