@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router";
 import {
   Menu, X, ChevronDown, Globe, Zap,
   TrendingUp, Layers, Brain, ShoppingBag,
-  Wallet, Shield, ChevronRight, Building, Crown, Code2, Video
+  Wallet, Shield, ChevronRight, Building, Crown, Code2, Video, GitBranch
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Web3ConnectionButton from "./Web3ConnectionButton";
@@ -20,10 +20,11 @@ const NAV_ITEMS = [
   { label: "IMMOBILIER",to: "/real-estate", icon: Building, special: false, sub: "Real Estate · ERC-3643" },
   { label: "STUDIO",    to: "/studio",   icon: Code2,      special: true,  sub: "Smart Contracts · No-Code" },
   { label: "TRADING",   to: "/trading",  icon: Shield,     special: false, sub: "Spot · Futures · Options" },
-  { label: "MEV GOD",   to: "/mev",      icon: Zap,        special: true,  sub: "Flash · Arbitrage · Bot" },
-  { label: "IA MAÎTRE", to: "/ai",       icon: Brain,      special: true,  sub: "Neural · Prediction · DAO" },
-  { label: "VIDÉO",     to: "/video",    icon: Video,      special: true,  sub: "Tutoriels · Démos · Témoignages" },
-  { label: "SERVICES",  to: "/services", icon: Globe,      special: false, sub: "Domain · Card · Bridge" },
+  { label: "MEV GOD",   to: "/mev",        icon: Zap,        special: true,  sub: "Flash · Arbitrage · Bot" },
+  { label: "IA MAÎTRE", to: "/ai",         icon: Brain,      special: true,  sub: "Neural · Prediction · DAO" },
+  { label: "OPEN SRC",  to: "/blockchain", icon: GitBranch,  special: false, sub: "Aave · Uniswap · Contracts" },
+  { label: "VIDÉO",     to: "/video",      icon: Video,      special: true,  sub: "Tutoriels · Démos · Témoignages" },
+  { label: "SERVICES",  to: "/services",   icon: Globe,      special: false, sub: "Domain · Card · Bridge" },
 ];
 
 const LANGS = [

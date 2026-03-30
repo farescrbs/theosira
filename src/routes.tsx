@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import WalletConnectPage from "./pages/WalletConnectPage";
 import VideoPage from "./pages/VideoPage";
+import BlockchainOpenSourcePage from "./pages/BlockchainOpenSourcePage";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
       { path: "profile", Component: ProfilePage },
       { path: "video", Component: VideoPage },
       { path: "god-mode", Component: GodModePage },
+      { path: "blockchain", Component: BlockchainOpenSourcePage },
       { path: "*", Component: NotFoundPage },
     ],
   },
